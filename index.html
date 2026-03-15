@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/poptyping/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pop Typing - 爽快タイピングゲーム</title>
+  <meta name="description" content="ポップコーンが弾けるような爽快感！タイピングを練習して高スコアを目指そう。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/poptyping/assets/index-D-8_XcwA.js"></script>
+  <link rel="stylesheet" crossorigin href="/poptyping/assets/index-DG-QQPTB.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="glass-panel">
+      <!-- パーティクル専用レイヤー -->
+      <div id="particle-container"></div>
+      <!-- 開始画面 -->
+      <div id="start-screen" class="start-screen">
+        <h1>Pop Typing</h1>
+        <p>タイピングでハートを弾けさせよう！</p>
+        <button id="start-button">ゲーム開始</button>
+        <button id="show-titles-button" class="secondary-button">称号一覧</button>
+      </div>
+
+      <!-- 称号一覧オーバーレイ -->
+      <div id="titles-overlay" class="titles-overlay hidden">
+        <div class="titles-content">
+          <h1>称号一覧</h1>
+          <div id="titles-list" class="titles-list">
+            <!-- JavaScriptで称号リストを動的に生成 -->
+          </div>
+          <button id="close-titles-button" class="secondary-button">戻る</button>
+        </div>
+      </div>
+
+      <!-- カウンドダウン -->
+      <div id="ready-timer" class="ready-timer hidden"></div>
+
+      <!-- ゲーム画面 -->
+      <div id="game-screen" class="game-container hidden">
+        <div class="stats-bar">
+          <div class="level-container">
+            <div class="level-info">Level <span id="current-level">1</span></div>
+            <div class="xp-bar-bg">
+              <div id="xp-bar-fill" class="xp-bar-fill"></div>
+            </div>
+          </div>
+          <div class="timer-container">
+            <svg class="timer-svg" viewBox="0 0 100 100">
+              <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+              <circle id="timer-circle" class="timer-progress" cx="50" cy="50" r="45"></circle>
+            </svg>
+            <div class="timer-text"><span id="time-left" class="stat-value">60</span>s</div>
+            <div id="time-bonus-pop" class="time-bonus-pop hidden">+5s!</div>
+          </div>
+          <div class="score-container">スコア: <span id="score" class="stat-value">0</span></div>
+        </div>
+        <div id="word-display" class="word-display"></div>
+        <div id="level-up-overlay" class="level-up-overlay hidden">LEVEL UP!</div>
+        <p style="color: var(--text-dim)">キーボードで入力してください</p>
+      </div>
+
+      <!-- リザルト画面 -->
+      <div id="result-screen" class="result-screen hidden">
+        <h1>リザルト</h1>
+        <div class="stats-bar" style="flex-direction: column; gap: 1rem;">
+          <div>最終スコア: <span id="final-score" class="stat-value">0</span></div>
+          <div id="title-container" class="title-container hidden">
+            <div class="title-label">獲得称号:</div>
+            <div id="rank-titles-list" class="title-list-container"></div>
+          </div>
+          <div>自己ベスト: <span id="high-score" class="stat-value">0</span></div>
+          <div>タイピング速度: <span id="wpm" class="stat-value">0</span> KPM</div>
+          <div>ミス数: <span id="misses" class="stat-value">0</span></div>
+        </div>
+        <div class="result-actions">
+          <button id="restart-button">もう一度遊ぶ</button>
+          <button id="show-titles-button-result" class="secondary-button">称号一覧</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
