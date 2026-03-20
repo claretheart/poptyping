@@ -174,6 +174,7 @@ class Game {
 
   private activeOverlaySource: 'start' | 'result' | null = null;
   private currentLv = 1;
+  private countdownInterval: number | null = null;
 
   constructor(elements: any) {
     this.elements = elements;
@@ -269,7 +270,7 @@ class Game {
     this.updateBackground();
     this.updateStats();
 
-    const countInterval = setInterval(() => {
+    this.countdownInterval = window.setInterval(() => {
       countdown--;
       if (countdown > 0) {
         this.elements.readyTimer.textContent = countdown.toString();
@@ -278,7 +279,8 @@ class Game {
         this.elements.readyTimer.textContent = 'GO!';
         this.sounds.playGo();
       } else {
-        clearInterval(countInterval);
+        if (this.countdownInterval) clearInterval(this.countdownInterval);
+        this.countdownInterval = null;
         this.elements.readyTimer.classList.add('hidden');
         this.startGame();
       }
@@ -373,6 +375,11 @@ class Game {
   }
 
   private handleInput(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      this.returnToTitle();
+      return;
+    }
+
     if (!this.isPlaying || e.key === 'Shift') return;
 
     this.totalKeys++;
@@ -571,6 +578,31 @@ class Game {
     ];
     const color = colors[Math.min(this.currentLv - 1, colors.length - 1)];
     document.body.style.background = color;
+  }
+
+  private returnToTitle() {
+    // 状態のクリア
+    this.isPlaying = false;
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+
+    // 画面の切り替え
+    this.elements.gameScreen.classList.add('hidden');
+    this.elements.resultScreen.classList.add('hidden');
+    this.elements.readyTimer.classList.add('hidden');
+    this.elements.titlesOverlay.classList.add('hidden');
+    this.elements.startScreen.classList.remove('hidden');
+
+    // 背景をリセット
+    this.currentLv = 1;
+    this.updateBackground();
+    this.elements.timeDisplay.textContent = '60';
   }
 
   private endGame() {
