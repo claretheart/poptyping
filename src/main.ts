@@ -185,6 +185,22 @@ class Game {
     this.elements.closeTitlesButton.onclick = () => this.hideTitlesOverlay();
     window.addEventListener('keydown', (e) => this.handleInput(e));
 
+    // モバイル入力対応: 画面タップで入力欄にフォーカスを戻す
+    document.addEventListener('click', () => {
+      if (this.isPlaying || this.elements.readyTimer.classList.contains('hidden') === false) {
+        this.elements.mobileInput.focus();
+      }
+    });
+
+    // モバイル入力対応: inputイベントで文字を拾う
+    this.elements.mobileInput.oninput = (e: any) => {
+      const char = e.data;
+      if (char) {
+        this.processChar(char);
+      }
+      this.elements.mobileInput.value = ''; // 常に空にする
+    };
+
     // 保存されている獲得済み称号を読み込む
     const saved = localStorage.getItem('pop-unlocked-titles');
     if (saved) {
@@ -256,6 +272,7 @@ class Game {
     this.elements.resultScreen.classList.add('hidden');
     this.elements.titlesOverlay.classList.add('hidden');
     this.elements.readyTimer.classList.remove('hidden');
+    this.elements.mobileInput.focus();
 
     let countdown = 3;
     this.elements.readyTimer.textContent = countdown.toString();
@@ -299,6 +316,7 @@ class Game {
     this.isPlaying = true;
     this.updateStats();
     this.nextWord();
+    this.elements.mobileInput.focus();
 
     this.elements.gameScreen.classList.remove('hidden');
     this.correctWordCount = 0;
@@ -382,10 +400,17 @@ class Game {
 
     if (!this.isPlaying || e.key === 'Shift') return;
 
+    // キーボードの1文字入力のみ処理 (mobile-input との重複を避けるため、特殊キーなどはここで処理)
+    if (e.key.length === 1) {
+      this.processChar(e.key);
+    }
+  }
+
+  private processChar(char: string) {
     this.totalKeys++;
     const targetChar = this.currentWord.romaji[this.currentIndex];
 
-    if (e.key === targetChar) {
+    if (char === targetChar) {
       this.currentIndex++;
 
       // 全文字一律 10点
@@ -414,7 +439,7 @@ class Game {
       } else {
         this.renderWord();
       }
-    } else if (this.checkAlternatives(e.key)) {
+    } else if (this.checkAlternatives(char)) {
       this.currentIndex++;
 
       const charPoints = 10;
@@ -718,7 +743,8 @@ function initGame() {
       currentLevel: document.getElementById('current-level'),
       xpBarFill: document.getElementById('xp-bar-fill'),
       timeBonusPop: document.getElementById('time-bonus-pop'),
-      levelUpOverlay: document.getElementById('level-up-overlay')
+      levelUpOverlay: document.getElementById('level-up-overlay'),
+      mobileInput: document.getElementById('mobile-input')
     };
 
     const missing = Object.entries(elements).filter(([_, el]) => !el);
