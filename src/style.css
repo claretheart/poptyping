@@ -279,21 +279,28 @@ button:active {
   font-size: 4rem;
   letter-spacing: 3px;
   position: relative;
-  min-height: 1.8em;
+  height: 250px; /* 垂直方向の高さを厳密に固定 */
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
   background: rgba(255, 255, 255, 0.3);
   padding: 2rem;
   border-radius: 30px;
   border: 2px dashed var(--primary-glow);
+  overflow: hidden;
 }
 
 .kanji-display {
   font-size: 4.5rem;
   font-weight: 900;
   color: #2d3436;
+  height: 6rem; /* 高さを固定 */
+  line-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ruby {
@@ -311,6 +318,12 @@ rt {
   font-size: 3.2rem;
   font-weight: 800;
   color: #636e72;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace; /* 等幅フォントで横振れを防止 */
+  height: 4rem; /* 高さを固定 */
+  line-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .char-correct {
@@ -325,15 +338,18 @@ rt {
 
 @keyframes char-pop {
   0% {
-    transform: scale(1);
+    opacity: 1;
+    transform: translateY(0);
   }
 
   50% {
-    transform: scale(1.3);
+    opacity: 0.8;
+    transform: translateY(-2px); /* 1.3倍スケールではなく、わずかな移動に留める */
   }
 
   100% {
-    transform: scale(1);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
