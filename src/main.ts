@@ -378,7 +378,12 @@ class Game {
       .split('')
       .map((char, i) => {
         let className = '';
-        if (i < this.currentIndex) className = 'char-correct';
+        if (i < this.currentIndex) {
+          className = 'char-correct';
+          if (i === this.currentIndex - 1) {
+            className += ' char-pop-anim';
+          }
+        }
         if (i === this.currentIndex) className = 'char-current';
         return `<span class="${className}">${char}</span>`;
       })
