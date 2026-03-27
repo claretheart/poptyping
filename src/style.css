@@ -107,11 +107,10 @@ body::after {
   /* 太めの境界線でポップに */
   border-radius: 40px;
   /* 大胆な角丸 */
-  padding: 3.5rem 2rem;
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.1),
     inset 0 0 20px rgba(255, 255, 255, 0.5);
-  transition: transform 0.3s ease;
+  /* transition: transform removed to prevent sub-pixel wobble */
   position: relative;
   z-index: 10;
   overflow: visible;
@@ -332,7 +331,7 @@ rt {
 }
 
 .char-pop-anim {
-  animation: char-pop 0.3s ease-out;
+  /* animation removed to be 100% sure nothing moves on correct input */
   display: inline-block;
 }
 
