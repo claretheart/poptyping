@@ -38,16 +38,17 @@
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
+  scrollbar-gutter: stable;
   background: var(--lv1-bg);
   background-attachment: fixed;
   transition: background 1.5s ease;
-  padding: 2rem 1rem;
+  padding: 1rem;
 }
 
 /* 浮遊する装飾要素 */
@@ -104,7 +105,7 @@ body::after {
   }
 
   50% {
-    transform: translateY(-15px);
+    transform: translateY(-5px);
   }
 }
 
