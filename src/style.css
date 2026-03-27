@@ -40,15 +40,12 @@
 body {
   height: 100vh;
   width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
-  scrollbar-gutter: stable;
   background: var(--lv1-bg);
   background-attachment: fixed;
   transition: background 1.5s ease;
-  padding: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
 /* 浮遊する装飾要素 */
@@ -89,25 +86,18 @@ body::after {
 }
 
 #app {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   max-width: 850px;
   padding: 1rem;
   text-align: center;
-  animation: float-panel 4s ease-in-out infinite;
-  /* 全体をふわふわさせる */
+  z-index: 100;
 }
 
-@keyframes float-panel {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-5px);
-  }
-}
+/* float-panel removed to prevent jitter */
 
 .glass-panel {
   background: var(--glass);
