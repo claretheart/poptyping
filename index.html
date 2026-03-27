@@ -27,17 +27,6 @@
         <button id="show-titles-button" class="secondary-button">称号一覧</button>
       </div>
 
-      <!-- 称号一覧オーバーレイ -->
-      <div id="titles-overlay" class="titles-overlay hidden">
-        <div class="titles-content">
-          <h1>称号一覧</h1>
-          <div id="titles-list" class="titles-list">
-            <!-- JavaScriptで称号リストを動的に生成 -->
-          </div>
-          <button id="close-titles-button" class="secondary-button">戻る</button>
-        </div>
-      </div>
-
       <!-- カウンドダウン -->
       <div id="ready-timer" class="ready-timer hidden"></div>
 
@@ -85,6 +74,17 @@
       </div>
     </div>
   </div>
+  <!-- 称号一覧オーバーレイ (body直下に配置して絶対的な中央表示を保証) -->
+  <div id="titles-overlay" class="titles-overlay hidden">
+    <div class="titles-content">
+      <h1>称号一覧</h1>
+      <div id="titles-list" class="titles-list">
+        <!-- JavaScriptで称号リストを動的に生成 -->
+      </div>
+      <button id="close-titles-button" class="secondary-button">戻る</button>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 
