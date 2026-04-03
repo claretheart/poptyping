@@ -177,6 +177,7 @@ class Game {
   private countdownInterval: number | null = null;
   private lastInputTime = 0;
   private lastInputChar = '';
+  private lastKeydownTime = 0;
 
   constructor(elements: any) {
     this.elements = elements;
@@ -196,6 +197,12 @@ class Game {
 
     // モバイル入力対応: inputイベントで文字を拾う
     this.elements.mobileInput.oninput = (e: any) => {
+      const now = performance.now();
+      // keydown で直近（100ms以内）で処理されている場合は重複（IME変換等）とみなして無視
+      if (now - this.lastKeydownTime < 100) {
+        return;
+      }
+
       const char = e.data;
       if (char) {
         this.processChar(char);
@@ -410,8 +417,10 @@ class Game {
     // キーボードの1文字入力のみ処理 (mobile-input との重複を避けるため、特殊キーなどはここで処理)
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
       if (e.isComposing) return; // IME入力中（変換前など）は無視する
+      
+      this.lastKeydownTime = performance.now();
       this.processChar(e.key);
-      e.preventDefault(); // ここで処理した文字が mobileInput に入り、oninput で再度判定される二重判定バグは processChar 内で防ぐ
+      e.preventDefault(); // ここで処理した文字が mobileInput に入り、oninput で再度判定される二重判定バグは oninput 側で防ぐ
     }
   }
 
