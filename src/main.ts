@@ -404,13 +404,6 @@ class Game {
     }
 
     if (!this.isPlaying || e.key === 'Shift') return;
-
-    // キーボードの1文字入力のみ処理 (mobile-input との重複を避けるため、特殊キーなどはここで処理)
-    if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      if (e.isComposing) return; // IME入力中（変換前など）は無視する
-      this.processChar(e.key);
-      e.preventDefault(); // ここで処理した文字が mobileInput に入り、oninput で再度判定される（即座にミスになる）二重判定バグを防ぐ
-    }
   }
 
   private processChar(char: string) {
