@@ -175,6 +175,8 @@ class Game {
   private activeOverlaySource: 'start' | 'result' | null = null;
   private currentLv = 1;
   private countdownInterval: number | null = null;
+  private lastInputTime = 0;
+  private lastInputChar = '';
 
   constructor(elements: any) {
     this.elements = elements;
@@ -404,13 +406,29 @@ class Game {
     }
 
     if (!this.isPlaying || e.key === 'Shift') return;
+
+    // キーボードの1文字入力のみ処理 (mobile-input との重複を避けるため、特殊キーなどはここで処理)
+    if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.isComposing) return; // IME入力中（変換前など）は無視する
+      this.processChar(e.key);
+      e.preventDefault(); // ここで処理した文字が mobileInput に入り、oninput で再度判定される二重判定バグは processChar 内で防ぐ
+    }
   }
 
   private processChar(char: string) {
+    const now = performance.now();
+    // 20ms以内の同一文字は重複入力（keydown/inputの同時発火）として無視
+    if (now - this.lastInputTime < 20 && char === this.lastInputChar) {
+      return;
+    }
+    this.lastInputTime = now;
+    this.lastInputChar = char;
+
+    const inputChar = char.toLowerCase();
     this.totalKeys++;
     const targetChar = this.currentWord.romaji[this.currentIndex];
 
-    if (char === targetChar) {
+    if (inputChar === targetChar) {
       this.currentIndex++;
 
       // 全文字一律 10点
@@ -439,7 +457,7 @@ class Game {
       } else {
         this.renderWord();
       }
-    } else if (this.checkAlternatives(char)) {
+    } else if (this.checkAlternatives(inputChar)) {
       this.currentIndex++;
 
       const charPoints = 10;
